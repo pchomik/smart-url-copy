@@ -24,5 +24,9 @@
     "48": "icons/default-48.png",
     "128": "icons/default-128.png"
   },
-  "permissions": []
+  "permissions": [
+    "activeTab",
+    "scripting",
+    "offscreen"
+  ]
 }

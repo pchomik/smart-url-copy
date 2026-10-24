@@ -8,6 +8,7 @@ export default defineConfig({
       input: {
         background: "src/background.ts",
         options: "src/options/options.html",
+        offscreen: "src/offscreen/offscreen.html",
       },
       output: {
         // Service worker loads as ES module (manifest "type": "module").
