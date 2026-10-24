@@ -4,10 +4,85 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Advance Copy: Options</title>
+    <style>
+      body { font-family: system-ui, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; }
+      li.rule { display: flex; gap: 0.75rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #ddd; }
+      li.rule .info { flex: 1; min-width: 0; }
+      li.rule .meta { color: #555; font-size: 0.9em; overflow-wrap: anywhere; }
+      label { display: block; margin: 0.6rem 0 0.1rem; }
+      input, select { font: inherit; padding: 0.2rem; min-width: 22rem; }
+      input[type="checkbox"] { min-width: 0; }
+      fieldset { border: 0; padding: 0; margin: 0; }
+      form { border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-top: 1rem; }
+      .error { display: block; color: #b00020; min-height: 0; }
+      .error:empty { display: none; }
+      #notice { color: #8a4b00; background: #fff4e0; padding: 0.5rem; border-radius: 4px; }
+      button { margin-right: 0.4rem; }
+    </style>
   </head>
   <body>
     <h1>Advance Copy</h1>
-    <p>Options are added in later steps.</p>
+
+    <section id="rules">
+      <h2>Rules</h2>
+      <p id="notice" hidden></p>
+      <p>Rules run in list order. Each rule changes the title or URL for the next click.</p>
+      <ol id="rule-list"></ol>
+      <button type="button" id="rule-add">Add rule</button>
+
+      <form id="rule-editor" hidden>
+        <h3 id="editor-title">Rule</h3>
+        <label>Name <input name="name" autocomplete="off" /></label>
+        <span class="error" data-error="name"></span>
+        <label><input name="enabled" type="checkbox" /> Enabled</label>
+        <span class="error" data-error="enabled"></span>
+        <label>Target
+          <select name="target">
+            <option value="title">Title</option>
+            <option value="url">URL</option>
+          </select>
+        </label>
+        <span class="error" data-error="target"></span>
+        <label>Page URL pattern (regex, empty = all pages)
+          <input name="pageUrlPattern" autocomplete="off" />
+        </label>
+        <span class="error" data-error="pageUrlPattern"></span>
+        <label>Action
+          <select name="kind">
+            <option value="regexReplace">Regex replace</option>
+            <option value="removeQueryParam">Remove query parameter (URL only)</option>
+            <option value="trim">Trim whitespace</option>
+          </select>
+        </label>
+        <span class="error" data-error="action.kind"></span>
+
+        <fieldset data-kind="regexReplace">
+          <label>Pattern <input name="pattern" autocomplete="off" /></label>
+          <span class="error" data-error="action.pattern"></span>
+          <label>Flags <input name="flags" autocomplete="off" /></label>
+          <span class="error" data-error="action.flags"></span>
+          <label>Replacement (use <code>{{ 0 }}</code>, <code>{{ 1 }}</code>, ...)
+            <input name="replacement" autocomplete="off" />
+          </label>
+          <span class="error" data-error="action.replacement"></span>
+        </fieldset>
+
+        <fieldset data-kind="removeQueryParam">
+          <label>Query parameter name <input name="paramName" autocomplete="off" /></label>
+          <span class="error" data-error="action.name"></span>
+        </fieldset>
+
+        <fieldset data-kind="trim">
+          <p>Removes leading and trailing whitespace.</p>
+        </fieldset>
+
+        <span class="error" id="editor-error"></span>
+        <p>
+          <button type="submit">Save rule</button>
+          <button type="button" id="rule-cancel">Cancel</button>
+        </p>
+      </form>
+    </section>
     <script type="module" src="./options.ts"></script>
   </body>
 </html>
