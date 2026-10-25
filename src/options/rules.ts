@@ -7,7 +7,7 @@ let settings: Settings;
 // index === rules.length means a new rule. id is the rule id kept on save.
 let editing: { index: number; id: string } | null = null;
 
-const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
+export const $ = <T extends HTMLElement>(sel: string) => document.querySelector<T>(sel)!;
 // Form control by name. Selects are typed as inputs: only .value and .disabled are used on them.
 const input = (name: string) => formEl.elements.namedItem(name) as HTMLInputElement;
 
@@ -16,7 +16,7 @@ const listEl = $<HTMLOListElement>("#rule-list");
 const noticeEl = $<HTMLParagraphElement>("#notice");
 const editorErrorEl = $<HTMLSpanElement>("#editor-error");
 
-function el<K extends keyof HTMLElementTagNameMap>(
+export function el<K extends keyof HTMLElementTagNameMap>(
   tag: K,
   text = "",
   props: Partial<HTMLElementTagNameMap[K]> = {},
@@ -43,8 +43,9 @@ function showNotice(message: string) {
 }
 
 // Saves rules and redraws the list. Returns false when storage rejects them.
+// Reloads stored settings so template changes made on this page are kept.
 async function commit(rules: Rule[]): Promise<boolean> {
-  const next = { ...settings, rules };
+  const next = { ...(await loadSettings()).settings, rules };
   try {
     await saveSettings(next);
   } catch (e) {

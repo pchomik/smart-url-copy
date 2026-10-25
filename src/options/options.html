@@ -17,6 +17,7 @@
       .error { display: block; color: #b00020; min-height: 0; }
       .error:empty { display: none; }
       #notice { color: #8a4b00; background: #fff4e0; padding: 0.5rem; border-radius: 4px; }
+      textarea { font: inherit; font-family: ui-monospace, monospace; width: 22rem; max-width: 100%; box-sizing: border-box; }
       button { margin-right: 0.4rem; }
     </style>
   </head>
@@ -80,6 +81,29 @@
         <p>
           <button type="submit">Save rule</button>
           <button type="button" id="rule-cancel">Cancel</button>
+        </p>
+      </form>
+    </section>
+
+    <section id="templates">
+      <h2>Templates</h2>
+      <p id="template-notice" hidden></p>
+      <p>The active template (radio button) is used on icon click.</p>
+      <ol id="template-list"></ol>
+      <button type="button" id="template-add">Add template</button>
+
+      <form id="template-editor" hidden>
+        <h3 id="template-editor-title">Template</h3>
+        <label>Name <input name="name" autocomplete="off" /></label>
+        <span class="error" data-error="name"></span>
+        <label>Body (placeholders: <code>{{ title }}</code>, <code>{{ url }}</code>)
+          <textarea name="body" rows="4"></textarea>
+        </label>
+        <span class="error" data-error="body"></span>
+        <span class="error" id="template-editor-error"></span>
+        <p>
+          <button type="submit">Save template</button>
+          <button type="button" id="template-cancel">Cancel</button>
         </p>
       </form>
     </section>
