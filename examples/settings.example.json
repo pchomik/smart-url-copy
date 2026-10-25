@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "rules": [
+    {
+      "id": "trim-title",
+      "name": "Trim title",
+      "enabled": true,
+      "pageUrlPattern": "",
+      "target": "title",
+      "action": {
+        "kind": "trim"
+      }
+    },
+    {
+      "id": "strip-site-suffix",
+      "name": "Remove site suffix",
+      "enabled": true,
+      "pageUrlPattern": "",
+      "target": "title",
+      "action": {
+        "kind": "regexReplace",
+        "pattern": " - Example$",
+        "flags": "",
+        "replacement": ""
+      }
+    },
+    {
+      "id": "blog-root",
+      "name": "Blog URL to root",
+      "enabled": true,
+      "pageUrlPattern": "^https://example\\.com/blog/",
+      "target": "url",
+      "action": {
+        "kind": "regexReplace",
+        "pattern": "^(https://[^/]+)/blog/.*$",
+        "flags": "",
+        "replacement": "{{ 1 }}/"
+      }
+    },
+    {
+      "id": "drop-utm",
+      "name": "Remove utm_source",
+      "enabled": true,
+      "pageUrlPattern": "",
+      "target": "url",
+      "action": {
+        "kind": "removeQueryParam",
+        "name": "utm_source"
+      }
+    },
+    {
+      "id": "drop-fragment",
+      "name": "Remove fragment",
+      "enabled": false,
+      "pageUrlPattern": "",
+      "target": "url",
+      "action": {
+        "kind": "regexReplace",
+        "pattern": "#(.*)$",
+        "flags": "",
+        "replacement": ""
+      }
+    }
+  ],
+  "templates": [
+    {
+      "id": "markdown",
+      "name": "Markdown link",
+      "body": "[{{ title }}]({{ url }})"
+    },
+    {
+      "id": "html",
+      "name": "HTML link",
+      "body": "<a href=\"{{ url }}\">{{ title }}</a>"
+    }
+  ],
+  "activeTemplateId": "markdown"
+}

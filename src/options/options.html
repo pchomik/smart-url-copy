@@ -19,6 +19,8 @@
       #notice { color: #8a4b00; background: #fff4e0; padding: 0.5rem; border-radius: 4px; }
       textarea { font: inherit; font-family: ui-monospace, monospace; width: 22rem; max-width: 100%; box-sizing: border-box; }
       button { margin-right: 0.4rem; }
+      #io-errors { list-style: none; padding: 0; }
+      #io-errors:empty { display: none; }
     </style>
   </head>
   <body>
@@ -106,6 +108,14 @@
           <button type="button" id="template-cancel">Cancel</button>
         </p>
       </form>
+    </section>
+    <section id="io">
+      <h2>Import and export</h2>
+      <p>Export saves all rules and templates as JSON. Import replaces all current settings.</p>
+      <button type="button" id="export">Export settings</button>
+      <button type="button" id="import">Import settings</button>
+      <input type="file" id="import-file" accept="application/json,.json" hidden />
+      <ul id="io-errors" class="error"></ul>
     </section>
     <script type="module" src="./options.ts"></script>
   </body>
