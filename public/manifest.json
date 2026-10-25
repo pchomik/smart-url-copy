@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "Advance Copy",
+  "name": "Smart URL Copy",
   "version": "0.1.0",
   "description": "Copy the current page title and URL as a rendered template to the clipboard.",
   "background": {
@@ -8,7 +8,7 @@
     "type": "module"
   },
   "action": {
-    "default_title": "Advance Copy",
+    "default_title": "Smart URL Copy",
     "default_icon": {
       "16": "icons/default-16.png",
       "48": "icons/default-48.png",
@@ -27,6 +27,7 @@
   "permissions": [
     "activeTab",
     "scripting",
-    "offscreen"
+    "offscreen",
+    "storage"
   ]
 }

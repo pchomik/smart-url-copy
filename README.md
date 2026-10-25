@@ -1,4 +1,4 @@
-# Advance Copy
+# Smart URL Copy
 
 Browser extension for Chrome and Brave (Manifest V3). One click on the toolbar icon copies the current page title and URL, after your rules transform them, rendered through a template, to the clipboard.
 
@@ -36,7 +36,7 @@ Run tests with `npm test`.
 
 1. Pull the new source and run `npm install` and `npm run build`.
 2. Open the extensions page (`chrome://extensions` or `brave://extensions`).
-3. Click the reload icon on the Advance Copy card.
+3. Click the reload icon on the Smart URL Copy card.
 
 Your settings stay in browser storage across updates.
 

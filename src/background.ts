@@ -4,7 +4,7 @@ import { renderTemplate } from "./core/template";
 import { copyText } from "./clipboard";
 
 const FEEDBACK_MS = 1500;
-const DEFAULT_TITLE = "Advance Copy";
+const DEFAULT_TITLE = "Smart URL Copy";
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 function setIconState(state: "default" | "ok" | "error"): Promise<void> {
