@@ -1,9 +1,9 @@
 name: Release
 
-# Runs when a version tag such as v0.2.0 is pushed.
+# Runs when any tag is pushed.
 on:
   push:
-    tags: ["v*"]
+    tags: ["**"]
 
 permissions:
   contents: write
