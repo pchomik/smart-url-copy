@@ -1,7 +1,7 @@
 {
   "name": "advance-copy",
   "version": "0.1.0",
-  "description": "Copy the current page title and URL as a rendered template to the clipboard.",
+  "description": "Copy the page title and URL in your own format, such as a Markdown link. Rules can edit them first.",
   "license": "MIT",
   "private": true,
   "type": "module",
