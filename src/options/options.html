@@ -4,119 +4,121 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Advance Copy: Options</title>
-    <style>
-      body { font-family: system-ui, sans-serif; max-width: 52rem; margin: 2rem auto; padding: 0 1rem; }
-      li.rule { display: flex; gap: 0.75rem; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #ddd; }
-      li.rule .info { flex: 1; min-width: 0; }
-      li.rule .meta { color: #555; font-size: 0.9em; overflow-wrap: anywhere; }
-      label { display: block; margin: 0.6rem 0 0.1rem; }
-      input, select { font: inherit; padding: 0.2rem; min-width: 22rem; }
-      input[type="checkbox"] { min-width: 0; }
-      fieldset { border: 0; padding: 0; margin: 0; }
-      form { border: 1px solid #ccc; border-radius: 6px; padding: 1rem; margin-top: 1rem; }
-      .error { display: block; color: #b00020; min-height: 0; }
-      .error:empty { display: none; }
-      #notice { color: #8a4b00; background: #fff4e0; padding: 0.5rem; border-radius: 4px; }
-      textarea { font: inherit; font-family: ui-monospace, monospace; width: 22rem; max-width: 100%; box-sizing: border-box; }
-      button { margin-right: 0.4rem; }
-      #io-errors { list-style: none; padding: 0; }
-      #io-errors:empty { display: none; }
-    </style>
+    <link rel="stylesheet" href="./options.css" />
   </head>
-  <body>
-    <h1>Advance Copy</h1>
+  <body class="min-h-screen bg-zinc-50 text-zinc-900 antialiased dark:bg-zinc-950 dark:text-zinc-100">
+    <main class="mx-auto max-w-3xl space-y-6 px-4 py-10">
+      <header class="flex items-center justify-between gap-4">
+        <div>
+          <h1 class="text-2xl font-semibold tracking-tight">Advance Copy</h1>
+          <p class="text-sm text-zinc-500 dark:text-zinc-400">Copy page titles and links as clean templates.</p>
+        </div>
+        <button type="button" id="theme-toggle" class="btn h-9 w-9 p-0" title="Switch theme" aria-label="Switch theme">
+          <svg class="hidden size-4 dark:block" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
+          </svg>
+          <svg class="size-4 dark:hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
+          </svg>
+        </button>
+      </header>
 
-    <section id="rules">
-      <h2>Rules</h2>
-      <p id="notice" hidden></p>
-      <p>Rules run in list order. Each rule changes the title or URL for the next click.</p>
-      <ol id="rule-list"></ol>
-      <button type="button" id="rule-add">Add rule</button>
+      <section id="rules" class="card">
+        <h2 class="text-lg font-semibold">Rules</h2>
+        <p id="notice" class="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-300" hidden></p>
+        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Rules run in list order. Each rule changes the title or URL for the next click.</p>
+        <ol id="rule-list" class="mt-4 list-none"></ol>
+        <button type="button" id="rule-add" class="btn mt-4">Add rule</button>
 
-      <form id="rule-editor" hidden>
-        <h3 id="editor-title">Rule</h3>
-        <label>Name <input name="name" autocomplete="off" /></label>
-        <span class="error" data-error="name"></span>
-        <label><input name="enabled" type="checkbox" /> Enabled</label>
-        <span class="error" data-error="enabled"></span>
-        <label>Target
-          <select name="target">
-            <option value="title">Title</option>
-            <option value="url">URL</option>
-          </select>
-        </label>
-        <span class="error" data-error="target"></span>
-        <label>Page URL pattern (regex, empty = all pages)
-          <input name="pageUrlPattern" autocomplete="off" />
-        </label>
-        <span class="error" data-error="pageUrlPattern"></span>
-        <label>Action
-          <select name="kind">
-            <option value="regexReplace">Regex replace</option>
-            <option value="removeQueryParam">Remove query parameter (URL only)</option>
-            <option value="trim">Trim whitespace</option>
-          </select>
-        </label>
-        <span class="error" data-error="action.kind"></span>
-
-        <fieldset data-kind="regexReplace">
-          <label>Pattern <input name="pattern" autocomplete="off" /></label>
-          <span class="error" data-error="action.pattern"></span>
-          <label>Flags <input name="flags" autocomplete="off" /></label>
-          <span class="error" data-error="action.flags"></span>
-          <label>Replacement (use <code>{{ 0 }}</code>, <code>{{ 1 }}</code>, ...)
-            <input name="replacement" autocomplete="off" />
+        <form id="rule-editor" class="mt-6 space-y-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-800" hidden>
+          <h3 id="editor-title" class="text-base font-semibold">Rule</h3>
+          <label class="block space-y-1.5 text-sm font-medium">Name <input name="name" autocomplete="off" class="field" /></label>
+          <span class="error" data-error="name"></span>
+          <label class="flex items-center gap-2 text-sm font-medium"><input name="enabled" type="checkbox" class="size-4 accent-indigo-600" /> Enabled</label>
+          <span class="error" data-error="enabled"></span>
+          <label class="block space-y-1.5 text-sm font-medium">Target
+            <select name="target" class="field">
+              <option value="title">Title</option>
+              <option value="url">URL</option>
+            </select>
           </label>
-          <span class="error" data-error="action.replacement"></span>
-        </fieldset>
+          <span class="error" data-error="target"></span>
+          <label class="block space-y-1.5 text-sm font-medium">Page URL pattern (regex, empty = all pages)
+            <input name="pageUrlPattern" autocomplete="off" class="field" />
+          </label>
+          <span class="error" data-error="pageUrlPattern"></span>
+          <label class="block space-y-1.5 text-sm font-medium">Action
+            <select name="kind" class="field">
+              <option value="regexReplace">Regex replace</option>
+              <option value="removeQueryParam">Remove query parameter (URL only)</option>
+              <option value="trim">Trim whitespace</option>
+            </select>
+          </label>
+          <span class="error" data-error="action.kind"></span>
 
-        <fieldset data-kind="removeQueryParam">
-          <label>Query parameter name <input name="paramName" autocomplete="off" /></label>
-          <span class="error" data-error="action.name"></span>
-        </fieldset>
+          <fieldset data-kind="regexReplace" class="space-y-4">
+            <label class="block space-y-1.5 text-sm font-medium">Pattern <input name="pattern" autocomplete="off" class="field" /></label>
+            <span class="error" data-error="action.pattern"></span>
+            <label class="block space-y-1.5 text-sm font-medium">Flags <input name="flags" autocomplete="off" class="field" /></label>
+            <span class="error" data-error="action.flags"></span>
+            <label class="block space-y-1.5 text-sm font-medium">Replacement (use <code class="rounded bg-zinc-100 px-1 dark:bg-zinc-800">{{ 0 }}</code>, <code class="rounded bg-zinc-100 px-1 dark:bg-zinc-800">{{ 1 }}</code>, ...)
+              <input name="replacement" autocomplete="off" class="field" />
+            </label>
+            <span class="error" data-error="action.replacement"></span>
+          </fieldset>
 
-        <fieldset data-kind="trim">
-          <p>Removes leading and trailing whitespace.</p>
-        </fieldset>
+          <fieldset data-kind="removeQueryParam" class="space-y-4">
+            <label class="block space-y-1.5 text-sm font-medium">Query parameter name <input name="paramName" autocomplete="off" class="field" /></label>
+            <span class="error" data-error="action.name"></span>
+          </fieldset>
 
-        <span class="error" id="editor-error"></span>
-        <p>
-          <button type="submit">Save rule</button>
-          <button type="button" id="rule-cancel">Cancel</button>
-        </p>
-      </form>
-    </section>
+          <fieldset data-kind="trim">
+            <p class="text-sm text-zinc-500 dark:text-zinc-400">Removes leading and trailing whitespace.</p>
+          </fieldset>
 
-    <section id="templates">
-      <h2>Templates</h2>
-      <p id="template-notice" hidden></p>
-      <p>The active template (radio button) is used on icon click.</p>
-      <ol id="template-list"></ol>
-      <button type="button" id="template-add">Add template</button>
+          <span class="error" id="editor-error"></span>
+          <div class="flex gap-2 pt-2">
+            <button type="submit" class="btn btn-primary">Save rule</button>
+            <button type="button" id="rule-cancel" class="btn">Cancel</button>
+          </div>
+        </form>
+      </section>
 
-      <form id="template-editor" hidden>
-        <h3 id="template-editor-title">Template</h3>
-        <label>Name <input name="name" autocomplete="off" /></label>
-        <span class="error" data-error="name"></span>
-        <label>Body (placeholders: <code>{{ title }}</code>, <code>{{ url }}</code>)
-          <textarea name="body" rows="4"></textarea>
-        </label>
-        <span class="error" data-error="body"></span>
-        <span class="error" id="template-editor-error"></span>
-        <p>
-          <button type="submit">Save template</button>
-          <button type="button" id="template-cancel">Cancel</button>
-        </p>
-      </form>
-    </section>
-    <section id="io">
-      <h2>Import and export</h2>
-      <p>Export saves all rules and templates as JSON. Import replaces all current settings.</p>
-      <button type="button" id="export">Export settings</button>
-      <button type="button" id="import">Import settings</button>
-      <input type="file" id="import-file" accept="application/json,.json" hidden />
-      <ul id="io-errors" class="error"></ul>
-    </section>
+      <section id="templates" class="card">
+        <h2 class="text-lg font-semibold">Templates</h2>
+        <p id="template-notice" class="mt-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800 dark:bg-amber-500/10 dark:text-amber-300" hidden></p>
+        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">The active template (radio button) is used on icon click.</p>
+        <ol id="template-list" class="mt-4 list-none"></ol>
+        <button type="button" id="template-add" class="btn mt-4">Add template</button>
+
+        <form id="template-editor" class="mt-6 space-y-4 rounded-xl border border-zinc-200 p-5 dark:border-zinc-800" hidden>
+          <h3 id="template-editor-title" class="text-base font-semibold">Template</h3>
+          <label class="block space-y-1.5 text-sm font-medium">Name <input name="name" autocomplete="off" class="field" /></label>
+          <span class="error" data-error="name"></span>
+          <label class="block space-y-1.5 text-sm font-medium">Body (placeholders: <code class="rounded bg-zinc-100 px-1 dark:bg-zinc-800">{{ title }}</code>, <code class="rounded bg-zinc-100 px-1 dark:bg-zinc-800">{{ url }}</code>)
+            <textarea name="body" rows="4" class="field font-mono"></textarea>
+          </label>
+          <span class="error" data-error="body"></span>
+          <span class="error" id="template-editor-error"></span>
+          <div class="flex gap-2 pt-2">
+            <button type="submit" class="btn btn-primary">Save template</button>
+            <button type="button" id="template-cancel" class="btn">Cancel</button>
+          </div>
+        </form>
+      </section>
+
+      <section id="io" class="card">
+        <h2 class="text-lg font-semibold">Import and export</h2>
+        <p class="mt-1 text-sm text-zinc-500 dark:text-zinc-400">Export saves all rules and templates as JSON. Import replaces all current settings.</p>
+        <div class="mt-4 flex gap-2">
+          <button type="button" id="export" class="btn">Export settings</button>
+          <button type="button" id="import" class="btn">Import settings</button>
+        </div>
+        <input type="file" id="import-file" accept="application/json,.json" hidden />
+        <ul id="io-errors" class="error mt-3 list-none space-y-1 empty:hidden"></ul>
+      </section>
+    </main>
     <script type="module" src="./options.ts"></script>
   </body>
 </html>
