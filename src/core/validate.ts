@@ -1,6 +1,6 @@
 import type { Settings } from "./model";
 
-export const MAX_PATTERN_LENGTH = 500;
+const MAX_PATTERN_LENGTH = 500;
 const TEMPLATE_PLACEHOLDERS = new Set(["title", "url"]);
 
 export type Result =

@@ -38,6 +38,8 @@ function removeQueryParam(url: string, name: string): string {
 
 function runAction(action: Action, value: string): string {
   switch (action.kind) {
+    // Ceiling: JS regex has no timeout, so a slow user pattern blocks the service worker.
+    // Only MAX_PATTERN_LENGTH limits it. Upgrade path: run regex in a worker with a timeout.
     case "regexReplace":
       return value.replace(new RegExp(action.pattern, action.flags), (...args: unknown[]) => {
         // Replacer args: match, captures..., offset, input[, named groups]. Offset is the first number.
