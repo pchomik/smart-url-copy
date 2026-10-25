@@ -11,7 +11,8 @@
     "default_title": "Smart URL Copy",
     "default_icon": {
       "16": "icons/default-16.png",
-      "48": "icons/default-48.png",
+      "24": "icons/default-24.png",
+      "32": "icons/default-32.png",
       "128": "icons/default-128.png"
     }
   },

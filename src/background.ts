@@ -4,12 +4,13 @@ import { renderTemplate } from "./core/template";
 import { copyText } from "./clipboard";
 
 const FEEDBACK_MS = 1500;
+const OK_FEEDBACK_MS = 1000;
 const DEFAULT_TITLE = "Smart URL Copy";
 let resetTimer: ReturnType<typeof setTimeout> | undefined;
 
 function setIconState(state: "default" | "ok" | "error"): Promise<void> {
   return chrome.action.setIcon({
-    path: { 16: `icons/${state}-16.png`, 48: `icons/${state}-48.png`, 128: `icons/${state}-128.png` },
+    path: { 16: `icons/${state}-16.png`, 24: `icons/${state}-24.png`, 32: `icons/${state}-32.png` },
   });
 }
 
@@ -29,7 +30,7 @@ async function showFeedback(reason: string | null, warnings: string[]): Promise<
     void setIconState("default");
     void chrome.action.setBadgeText({ text: "" });
     void chrome.action.setTitle({ title: DEFAULT_TITLE });
-  }, FEEDBACK_MS);
+  }, reason === null ? OK_FEEDBACK_MS : FEEDBACK_MS);
 }
 
 chrome.action.onClicked.addListener(async (tab) => {

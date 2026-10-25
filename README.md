@@ -43,7 +43,7 @@ Your settings stay in browser storage across updates.
 ## Usage
 
 - **Click the toolbar icon:** copies the active template to the clipboard as `text/plain` and `text/html`, both with the same text.
-- **Icon states:** the icon turns green with a check when the copy succeeds, and red when it fails. It returns to the default icon after about 1.5 seconds. On failure, the tooltip shows the reason for the same 1.5 seconds, so hover the icon right after clicking.
+- **Icon states:** the icon turns green with a check when the copy succeeds, and red when it fails. It returns to the default icon after 1 second on success and about 1.5 seconds on failure. On failure, the tooltip shows the reason for the same 1.5 seconds, so hover the icon right after clicking.
 - **Options:** right-click the toolbar icon and choose **Options**. The options page has three sections:
   - **Rules:** change the title or URL. Rules run in list order. Each rule can be enabled or disabled, and can apply only to pages whose URL matches a regex.
   - **Templates:** define output formats. One template is active and used by the icon.
