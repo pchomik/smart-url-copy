@@ -18,6 +18,16 @@ Output goes to `dist/`. `npm run build` type-checks first and fails on type erro
 
 Run tests with `npm test`.
 
+## Install from a release
+
+1. Open the [Releases](../../releases) page and download `smart-url-copy-vX.Y.Z.zip` from the latest release.
+2. Unzip it into a folder. Keep the folder: Chrome and Brave load the extension from it.
+3. Open `chrome://extensions` (or `brave://extensions`).
+4. Enable **Developer mode** (top right).
+5. Click **Load unpacked** and select the unzipped folder.
+
+To update, download the new zip, replace the folder contents, then click the reload icon on the Smart URL Copy card.
+
 ## Install in Chrome
 
 1. Run the build (see above).
