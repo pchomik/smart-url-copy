@@ -1,24 +1,33 @@
 // Writes text/plain and text/html (same string) to the system clipboard.
-// Self-contained on purpose: it is serialized into the page by chrome.scripting.executeScript.
+// Uses execCommand: navigator.clipboard.write fails in offscreen documents (document not focused).
 // Returns null on success, or an error message.
-export async function writeClipboard(text: string): Promise<string | null> {
+export function writeClipboard(text: string): string | null {
+  const area = document.createElement("textarea");
+  area.value = text;
+  document.body.appendChild(area);
+  area.select();
+  const onCopy = (e: ClipboardEvent) => {
+    e.preventDefault();
+    e.clipboardData?.setData("text/plain", text);
+    e.clipboardData?.setData("text/html", text);
+  };
+  document.addEventListener("copy", onCopy);
   try {
-    await navigator.clipboard.write([
-      new ClipboardItem({
-        "text/plain": new Blob([text], { type: "text/plain" }),
-        "text/html": new Blob([text], { type: "text/html" }),
-      }),
-    ]);
-    return null;
+    if (document.execCommand("copy")) return null;
+    // Facts for diagnosis: why the copy command was refused.
+    return `execCommand copy returned false (focus=${document.hasFocus()}, activation=${navigator.userActivation?.isActive}, enabled=${document.queryCommandEnabled("copy")}, selected=${JSON.stringify(window.getSelection()?.toString())})`;
   } catch (e) {
     return (e as Error).message || String(e);
+  } finally {
+    document.removeEventListener("copy", onCopy);
+    area.remove();
   }
 }
 
 const OFFSCREEN_PATH = "src/offscreen/offscreen.html";
 
-// Fallback for pages that cannot be scripted (chrome://, Web Store, PDF viewer, injection errors).
-async function copyViaOffscreen(text: string): Promise<string | null> {
+// Copies from the extension origin, so the page never gets a clipboard permission prompt.
+export async function copyText(text: string): Promise<string | null> {
   const url = chrome.runtime.getURL(OFFSCREEN_PATH);
   const existing = await chrome.runtime.getContexts({
     contextTypes: [chrome.runtime.ContextType.OFFSCREEN_DOCUMENT],
@@ -36,27 +45,4 @@ async function copyViaOffscreen(text: string): Promise<string | null> {
     | null
     | undefined;
   return res ?? null;
-}
-
-// Returns null on success, or a reason message naming both methods that failed.
-export async function copyText(tabId: number, text: string): Promise<string | null> {
-  let injectError: string;
-  try {
-    const [res] = await chrome.scripting.executeScript({
-      target: { tabId },
-      func: writeClipboard,
-      args: [text],
-    });
-    if (res?.result === null) return null;
-    injectError = (res?.result as string | undefined) ?? "no result from page";
-  } catch (e) {
-    injectError = (e as Error).message;
-  }
-
-  try {
-    const fallbackError = await copyViaOffscreen(text);
-    return fallbackError === null ? null : `${fallbackError} (page: ${injectError})`;
-  } catch (e) {
-    return `${(e as Error).message} (page: ${injectError})`;
-  }
 }

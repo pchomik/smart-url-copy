@@ -29,6 +29,7 @@
     "activeTab",
     "scripting",
     "offscreen",
+    "clipboardWrite",
     "storage"
   ],
   "host_permissions": [

@@ -18,6 +18,7 @@ function setIconState(state: "default" | "ok" | "error"): Promise<void> {
 // Error: red "ERR" badge. Warnings only: amber "!" badge. Tooltip lists every message.
 async function showFeedback(reason: string | null, warnings: string[]): Promise<void> {
   clearTimeout(resetTimer);
+  if (reason !== null) console.error("Smart URL Copy:", reason, warnings);
   const messages = reason === null ? warnings : [reason, ...warnings];
   const badge = reason !== null ? "ERR" : warnings.length > 0 ? "!" : "";
   await setIconState(reason === null ? "ok" : "error");
@@ -46,7 +47,7 @@ chrome.action.onClicked.addListener(async (tab) => {
     warnings.push(...title.warnings, ...url.warnings);
     const template = settings.templates.find((t) => t.id === settings.activeTemplateId);
     if (!template) throw new Error("active template not found");
-    reason = await copyText(tab.id, renderTemplate(template.body, { title: title.value, url: url.value }));
+    reason = await copyText(renderTemplate(template.body, { title: title.value, url: url.value }));
   } catch (e) {
     reason = (e as Error).message;
   }
