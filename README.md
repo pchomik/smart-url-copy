@@ -2,6 +2,8 @@
 
 Browser extension for Chrome and Brave (Manifest V3). One click on the toolbar icon copies the current page title and URL, after your rules transform them, rendered through a template, to the clipboard.
 
+[Privacy policy](PRIVACY.md) · [Changelog](CHANGELOG.md) · [Security and support](SECURITY.md)
+
 ## Requirements
 
 - Node.js LTS
@@ -17,6 +19,10 @@ npm run build
 Output goes to `dist/`. `npm run build` type-checks first and fails on type errors.
 
 Run tests with `npm test`.
+
+## Install from the Chrome Web Store
+
+The store listing is pending. Once published, the store link goes here. Until then, use one of the methods below.
 
 ## Install from a release
 
