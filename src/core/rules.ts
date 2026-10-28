@@ -24,14 +24,20 @@ function isValidUrl(s: string): boolean {
   }
 }
 
-// Removes every query parameter named `name`. Other parameters keep their raw encoding and order.
-function removeQueryParam(url: string, name: string): string {
+// Removes every query parameter whose decoded name equals `name`, or matches it as a whole-name regex.
+// Other parameters keep their raw encoding and order.
+function removeQueryParam(url: string, name: string, regex: boolean): string {
   const u = new URL(url);
   if (!u.search) return url;
+  const nameRe = regex ? new RegExp(`^(?:${name})$`) : null;
   const kept = u.search
     .slice(1)
     .split("&")
-    .filter((seg) => seg !== "" && [...new URLSearchParams(seg).keys()][0] !== name);
+    .filter((seg) => {
+      if (seg === "") return false;
+      const key = [...new URLSearchParams(seg).keys()][0];
+      return nameRe ? !nameRe.test(key) : key !== name;
+    });
   u.search = kept.join("&");
   return u.href;
 }
@@ -47,7 +53,7 @@ function runAction(action: Action, value: string): string {
         return expandReplacement(action.replacement, args.slice(0, end) as string[]);
       });
     case "removeQueryParam":
-      return removeQueryParam(value, action.name);
+      return removeQueryParam(value, action.name, action.regex === true);
     case "trim":
       return value.trim();
   }

@@ -46,6 +46,14 @@ describe("validateSettings", () => {
     expect(r.errors[0]).toMatch(/^rules\[0\]\.target: removeQueryParam requires target "url"/);
   });
 
+  it("rejects invalid regex in removeQueryParam name when regex is set", () => {
+    const bad = { kind: "removeQueryParam", name: "utm(", regex: true };
+    const r = validateSettings(withRules(rule({ target: "url", action: bad })));
+    if (r.ok) throw new Error("expected failure");
+    expect(r.errors[0]).toMatch(/^rules\[0\]\.action\.name: invalid regex/);
+    expect(validateSettings(withRules(rule({ target: "url", action: { ...bad, regex: false } }))).ok).toBe(true);
+  });
+
   it("rejects duplicate rule ids", () => {
     const r = validateSettings(withRules(rule({}), rule({})));
     if (r.ok) throw new Error("expected failure");

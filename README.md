@@ -71,6 +71,7 @@ Placeholders: `{{ title }}` and `{{ url }}`. Output is not escaped.
 - **Trim title:** target `title`, action *Trim*.
 - **Remove site suffix:** target `title`, action *Regex replace*, pattern ` - Example$`, replacement empty.
 - **Remove `utm_source` parameter:** target `url`, action *Remove query parameter*, name `utm_source`.
+- **Remove a group of parameters:** target `url`, action *Remove query parameter*, name `utm_.*`, with *Name is a regex* checked. The regex must match the whole parameter name. Use `.*` to remove all query parameters.
 - **Blog URL to site root:** target `url`, action *Regex replace*, page URL pattern `^https://example\.com/blog/`, pattern `^(https://[^/]+)/blog/.*$`, replacement `{{ 1 }}/`. `{{ 1 }}` is the first capture group, and `{{ 0 }}` is the whole match.
 
 If a URL rule produces an invalid URL, the previous value is kept and a warning is shown.

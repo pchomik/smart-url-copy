@@ -91,6 +91,8 @@ export function validateSettings(x: unknown): Result {
         return;
       case "removeQueryParam":
         if (!isStr(a.name)) err(`${ap}.name`, "must be a string");
+        else if (a.regex !== undefined && typeof a.regex !== "boolean") err(`${ap}.regex`, "must be a boolean");
+        else if (a.regex === true) checkPattern(`${ap}.name`, a.name, "");
         if (r.target !== "url") err(`${p}.target`, 'removeQueryParam requires target "url"');
         return;
       case "trim":

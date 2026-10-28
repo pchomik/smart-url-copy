@@ -8,7 +8,7 @@ export interface Template {
 
 export type Action =
   | { kind: "regexReplace"; pattern: string; flags: string; replacement: string } // replacement may use {{ 0 }}, {{ 1 }}, ...
-  | { kind: "removeQueryParam"; name: string } // URL only
+  | { kind: "removeQueryParam"; name: string; regex?: boolean } // URL only; regex: name is a whole-name regex
   | { kind: "trim" };
 
 export interface Rule {

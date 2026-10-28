@@ -31,7 +31,7 @@ function summary(a: Action): string {
     case "regexReplace":
       return `replace /${a.pattern}/${a.flags} with "${a.replacement}"`;
     case "removeQueryParam":
-      return `remove query parameter "${a.name}"`;
+      return a.regex ? `remove query parameters matching /${a.name}/` : `remove query parameter "${a.name}"`;
     case "trim":
       return "trim whitespace";
   }
@@ -132,6 +132,7 @@ function fillForm(rule: Rule) {
   input("flags").value = a.kind === "regexReplace" ? a.flags : "";
   input("replacement").value = a.kind === "regexReplace" ? a.replacement : "";
   input("paramName").value = a.kind === "removeQueryParam" ? a.name : "";
+  input("paramRegex").checked = a.kind === "removeQueryParam" && a.regex === true;
   showKindFields(a.kind);
 }
 
@@ -146,7 +147,7 @@ function readRule(id: string): Rule {
           replacement: input("replacement").value,
         }
       : kind === "removeQueryParam"
-        ? { kind, name: input("paramName").value }
+        ? { kind, name: input("paramName").value, regex: input("paramRegex").checked }
         : { kind: "trim" };
   return {
     id,

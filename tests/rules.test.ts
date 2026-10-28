@@ -44,6 +44,16 @@ describe("applyRules", () => {
     expect(run([r], "url", "https://a.com/p?utm_source=x").value).toBe("https://a.com/p");
   });
 
+  it("removeQueryParam with regex removes whole-name matches only", () => {
+    const url = "https://a.com/p?utm_source=x&utm_medium=y&xutm_z=1&id=2&Utm_Q=3";
+    const group = rule("url", { kind: "removeQueryParam", name: "utm_.*", regex: true });
+    expect(run([group], "url", url).value).toBe("https://a.com/p?xutm_z=1&id=2&Utm_Q=3");
+    const all = rule("url", { kind: "removeQueryParam", name: ".*", regex: true });
+    expect(run([all], "url", url).value).toBe("https://a.com/p");
+    const exact = rule("url", { kind: "removeQueryParam", name: "utm_.*" });
+    expect(run([exact], "url", url).value).toBe(url);
+  });
+
   it("trim strips whitespace", () => {
     expect(run([rule("title", { kind: "trim" })], "title", "  Hi  ").value).toBe("Hi");
   });

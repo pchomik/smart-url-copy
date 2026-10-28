@@ -69,8 +69,10 @@
           </fieldset>
 
           <fieldset data-kind="removeQueryParam" class="space-y-4">
-            <label class="block space-y-1.5 text-sm font-medium">Query parameter name <input name="paramName" autocomplete="off" class="field" /></label>
+            <label class="block space-y-1.5 text-sm font-medium">Query parameter name (or regex) <input name="paramName" autocomplete="off" class="field" /></label>
             <span class="error" data-error="action.name"></span>
+            <label class="flex items-center gap-2 text-sm font-medium"><input name="paramRegex" type="checkbox" class="size-4 accent-indigo-600" /> Name is a regex (must match the whole name, e.g. <code class="rounded bg-zinc-100 px-1 dark:bg-zinc-800">utm_.*</code>)</label>
+            <span class="error" data-error="action.regex"></span>
           </fieldset>
 
           <fieldset data-kind="trim">
