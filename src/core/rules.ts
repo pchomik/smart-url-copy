@@ -56,6 +56,13 @@ function runAction(action: Action, value: string): string {
       return removeQueryParam(value, action.name, action.regex === true);
     case "trim":
       return value.trim();
+    case "truncate": {
+      if (value.length <= action.maxLength) return value;
+      const suffix = action.suffix ?? "…";
+      const keep = action.maxLength - suffix.length;
+      if (keep <= 0) return suffix.slice(0, action.maxLength);
+      return value.slice(0, keep) + suffix;
+    }
   }
 }
 

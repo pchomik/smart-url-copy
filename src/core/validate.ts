@@ -97,8 +97,16 @@ export function validateSettings(x: unknown): Result {
         return;
       case "trim":
         return;
+      case "truncate":
+        if (typeof a.maxLength !== "number" || !Number.isInteger(a.maxLength) || a.maxLength <= 0) {
+          err(`${ap}.maxLength`, "must be a positive integer");
+        }
+        if (a.suffix !== undefined && typeof a.suffix !== "string") {
+          err(`${ap}.suffix`, "must be a string");
+        }
+        return;
       default:
-        return err(`${ap}.kind`, 'must be "regexReplace", "removeQueryParam" or "trim"');
+        return err(`${ap}.kind`, 'must be "regexReplace", "removeQueryParam", "trim" or "truncate"');
     }
   }
 

@@ -59,4 +59,43 @@ describe("validateSettings", () => {
     if (r.ok) throw new Error("expected failure");
     expect(r.errors[0]).toMatch(/^rules\[1\]\.id: duplicate id "r1"/);
   });
+
+  it("accepts valid truncate rule", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: 50 } })));
+    expect(r.ok).toBe(true);
+  });
+
+  it("accepts truncate rule with explicit suffix", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: 20, suffix: "..." } })));
+    expect(r.ok).toBe(true);
+  });
+
+  it("rejects truncate with maxLength 0", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: 0 } })));
+    if (r.ok) throw new Error("expected failure");
+    expect(r.errors[0]).toMatch(/^rules\[0\]\.action\.maxLength: must be a positive integer/);
+  });
+
+  it("rejects truncate with negative maxLength", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: -1 } })));
+    if (r.ok) throw new Error("expected failure");
+    expect(r.errors[0]).toMatch(/^rules\[0\]\.action\.maxLength: must be a positive integer/);
+  });
+
+  it("rejects truncate with non-integer maxLength", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: 3.5 } })));
+    if (r.ok) throw new Error("expected failure");
+    expect(r.errors[0]).toMatch(/^rules\[0\]\.action\.maxLength: must be a positive integer/);
+  });
+
+  it("rejects truncate with non-string suffix", () => {
+    const r = validateSettings(withRules(rule({ action: { kind: "truncate", maxLength: 10, suffix: 123 } })));
+    if (r.ok) throw new Error("expected failure");
+    expect(r.errors[0]).toMatch(/^rules\[0\]\.action\.suffix: must be a string/);
+  });
+
+  it("accepts settings without truncate rules (backward compatibility)", () => {
+    const s = defaultSettings();
+    expect(validateSettings(s).ok).toBe(true);
+  });
 });
