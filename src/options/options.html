@@ -53,6 +53,7 @@
               <option value="regexReplace">Regex replace</option>
               <option value="removeQueryParam">Remove query parameter (URL only)</option>
               <option value="trim">Trim whitespace</option>
+              <option value="truncate">Truncate</option>
             </select>
           </label>
           <span class="error" data-error="action.kind"></span>
@@ -77,6 +78,15 @@
 
           <fieldset data-kind="trim">
             <p class="text-sm text-zinc-500 dark:text-zinc-400">Removes leading and trailing whitespace.</p>
+          </fieldset>
+
+          <fieldset data-kind="truncate" class="space-y-4">
+            <label class="block space-y-1.5 text-sm font-medium">Max length (positive integer) <input name="maxLength" type="number" min="1" autocomplete="off" class="field" /></label>
+            <span class="error" data-error="action.maxLength"></span>
+            <label class="block space-y-1.5 text-sm font-medium">Suffix (optional, default is "…")
+              <input name="suffix" autocomplete="off" class="field" />
+            </label>
+            <span class="error" data-error="action.suffix"></span>
           </fieldset>
 
           <span class="error" id="editor-error"></span>

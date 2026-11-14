@@ -34,6 +34,8 @@ function summary(a: Action): string {
       return a.regex ? `remove query parameters matching /${a.name}/` : `remove query parameter "${a.name}"`;
     case "trim":
       return "trim whitespace";
+    case "truncate":
+      return `truncate to ${a.maxLength} characters with suffix "${a.suffix ?? "…"}"`;
   }
 }
 
@@ -133,6 +135,8 @@ function fillForm(rule: Rule) {
   input("replacement").value = a.kind === "regexReplace" ? a.replacement : "";
   input("paramName").value = a.kind === "removeQueryParam" ? a.name : "";
   input("paramRegex").checked = a.kind === "removeQueryParam" && a.regex === true;
+  input("maxLength").value = a.kind === "truncate" ? String(a.maxLength) : "";
+  input("suffix").value = a.kind === "truncate" ? (a.suffix ?? "") : "";
   showKindFields(a.kind);
 }
 
@@ -148,7 +152,9 @@ function readRule(id: string): Rule {
         }
       : kind === "removeQueryParam"
         ? { kind, name: input("paramName").value, regex: input("paramRegex").checked }
-        : { kind: "trim" };
+        : kind === "truncate"
+          ? { kind, maxLength: Number(input("maxLength").value), suffix: input("suffix").value || undefined }
+          : { kind: "trim" };
   return {
     id,
     name: input("name").value,

@@ -82,4 +82,34 @@ describe("applyRules", () => {
     expect(out.value).toBe("https://a.com/");
     expect(out.warnings).toHaveLength(1);
   });
+
+  it("truncate shortens text exceeding maxLength, counting suffix toward limit", () => {
+    const r = rule("title", { kind: "truncate", maxLength: 10, suffix: "…" });
+    expect(run([r], "title", "abcdefghijklmnop").value).toBe("abcdefghi…");
+    expect(run([r], "title", "abcdefghij").value).toBe("abcdefghij");
+  });
+
+  it("truncate uses default suffix when suffix is omitted", () => {
+    const r = rule("title", { kind: "truncate", maxLength: 5 });
+    expect(run([r], "title", "abcdefgh").value).toBe("abcd…");
+  });
+
+  it("truncate passes through text at or below maxLength unchanged", () => {
+    const r = rule("title", { kind: "truncate", maxLength: 50 });
+    expect(run([r], "title", "short").value).toBe("short");
+    expect(run([r], "title", "").value).toBe("");
+  });
+
+  it("truncate runs after previous rules in the pipeline", () => {
+    const rules = [
+      rule("title", { kind: "regexReplace", pattern: " - Example$", flags: "", replacement: "" }),
+      rule("title", { kind: "truncate", maxLength: 3 }),
+    ];
+    expect(run(rules, "title", "Home - Example").value).toBe("Ho…");
+  });
+
+  it("truncate does not throw for empty strings", () => {
+    const r = rule("title", { kind: "truncate", maxLength: 5 });
+    expect(run([r], "title", "").value).toBe("");
+  });
 });
