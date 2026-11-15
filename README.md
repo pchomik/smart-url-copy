@@ -53,6 +53,7 @@ Rules run in list order. Each rule can be turned on or off.
 | Goal | Rule |
 |---|---|
 | Trim spaces in title | Target `title`, action *Trim* |
+| Limit title to 80 chars | Target `title`, action *Truncate*, maxLength `80` |
 | Remove ` - Example` suffix | Target `title`, *Regex replace*, pattern ` - Example$`, empty replacement |
 | Remove `utm_source` | Target `url`, *Remove query parameter*, name `utm_source` |
 | Remove all `utm_*` | Same, name `utm_.*` with *Name is a regex* checked |
