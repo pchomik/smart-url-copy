@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Smart URL Copy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "homepage_url": "https://github.com/pchomik/smart-url-copy",
   "minimum_chrome_version": "116",
   "description": "Copy the page title and URL in your own format, such as a Markdown link. Rules can edit them first.",
@@ -27,10 +27,5 @@
     "48": "icons/default-48.png",
     "128": "icons/default-128.png"
   },
-  "permissions": [
-    "activeTab",
-    "offscreen",
-    "clipboardWrite",
-    "storage"
-  ]
+  "permissions": ["activeTab", "offscreen", "clipboardWrite", "storage"]
 }

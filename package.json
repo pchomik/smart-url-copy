@@ -1,6 +1,6 @@
 {
   "name": "smart-url-copy",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Copy the page title and URL in your own format, such as a Markdown link. Rules can edit them first.",
   "license": "MIT",
   "private": true,
